@@ -47,7 +47,7 @@ export default class Upload extends React.Component {
                   <input type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
                 </div>
               </form>
-              <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
+              <button type="button" class="btn btn-success btn-block upload" onClick={this.onClickHandler}>Upload</button>
           </div>
         </div>
       </div>

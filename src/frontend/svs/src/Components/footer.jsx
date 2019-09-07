@@ -8,8 +8,10 @@ export default class Footer extends React.Component{
     return (
       <div className="footer">
         <div className="source">
-          <div className="text">This project is available on <a className="link" href="https://github.com/enioluwa23/smart-vision-sheets">GitHub</a></div>
-          <Link to="/about" className="link">About</Link>
+        <Link to="/about" className="link">About</Link>
+        <div>
+        <Link to="https://github.com/enioluwa23/smart-vision-sheets" className="link">This project is available on GitHub</Link>
+        </div>
         </div>
       </div>
     );
