@@ -7,3 +7,18 @@
 .aboutText {
   font-size: 0.8em;
 }
+
+.privacyPolicy {
+  font-size: 0.7em;
+  text-align: left;
+  padding: 0.5em;
+  margin-left: 5em;
+  margin-right: 5em;
+  border: 1px grey solid;
+  border-radius: 0.4em;
+  background-color: rgb(21, 21, 21);
+}
+
+.bold {
+  font-weight: 700;
+}
