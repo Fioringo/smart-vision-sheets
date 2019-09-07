@@ -7,10 +7,13 @@
   align-content: center;
   justify-content: center;
   justify-items: center;
-  padding: 0.2em;
-  padding-top: 1.2em;
+  padding: 0.5em;
   margin-bottom: 0;
   font-size: 0.8em;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
 }
 
 .link {
@@ -20,6 +23,8 @@
 
 .link:hover {
   cursor: pointer;
+  text-decoration: none;
+  color: #FFF;
 }
 
 .link:visited {
