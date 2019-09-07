@@ -1,6 +1,5 @@
 import React from "react";
 import "./home.css";
-import Upload from "./upload";
 
 export default class Home extends React.Component {
   render() {
@@ -21,7 +20,6 @@ export default class Home extends React.Component {
         <div className="description">
           Convert your sheets into Google Sheets
         </div>
-        {/* <Upload/> */}
       </div>
     );
   }
