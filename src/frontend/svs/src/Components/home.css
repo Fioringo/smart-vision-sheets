@@ -24,3 +24,7 @@
   flex-flow: row;
   justify-content: center;
 }
+
+.home {
+  margin: auto;
+}
