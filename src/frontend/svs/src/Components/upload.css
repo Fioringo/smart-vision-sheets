@@ -2,7 +2,9 @@
   background-color: #123ace;
 }
 
-form {
-  background-color: grey;
-  padding: 10px;
+.row {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
 }
