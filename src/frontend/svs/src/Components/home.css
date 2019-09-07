@@ -1,0 +1,24 @@
+.yellow {
+  color: #ffff36;
+}
+
+.blue {
+  color: #3399ff;
+}
+
+.red {
+  color: #ff0000;
+}
+
+.grey {
+  color: #c2c2c2;
+}
+
+.green {
+  color: #24cb31;
+}
+
+.title {
+  display: flex;
+  font-size: 1.2em;
+}
