@@ -10,7 +10,7 @@ export default class Footer extends React.Component{
         <div className="source">
         <Link to="/about" className="link">About</Link>
         <div>
-        <Link to="https://github.com/enioluwa23/smart-vision-sheets" className="link">This project is available on GitHub</Link>
+        <a href="https://github.com/enioluwa23/smart-vision-sheets" className="link">This project is available on GitHub</a>
         </div>
         </div>
       </div>
