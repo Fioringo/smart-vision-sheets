@@ -2,9 +2,9 @@
   background-color: #272727;
   color: #c2c2c2;
   font-family: 'Roboto', sans-serif;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .content {
-  height: 90vh;
+  margin-top: 60px;
 }
