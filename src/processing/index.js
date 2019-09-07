@@ -1,3 +1,14 @@
+// "cloud-repo-tools": {
+//   "requiresKeyFile": true,
+//   "requiresProjectId": true,
+//   "requiredEnvVars": [
+//     "FUNCTIONS_BUCKET",
+//     "OUTPUT_BUCKET",
+//     "TRANSLATE_TOPIC",
+//     "RESULT_TOPIC"
+//   ]
+// }
+
 const { PubSub } = require('@google-cloud/pubsub');
 const { Storage } = require('@google-cloud/storage');
 const Vision = require('@google-cloud/vision');

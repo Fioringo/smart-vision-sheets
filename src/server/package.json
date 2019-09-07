@@ -1,0 +1,32 @@
+{
+  "name": "smart-vision-sheets-server",
+  "version": "1.0.0",
+  "description": "Server for interacting the the Google Cloud Vision API and the GSuite API",
+  "main": "index.js",
+  "scripts": {
+    "start": "export GOOGLE_APPLICATION_CREDENTIALS=\"../PennAppsXX-fbaf15f9bebf.json\" && node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enioluwa23/smart-vision-sheets.git"
+  },
+  "author": "Enioluwa Segun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enioluwa23/smart-vision-sheets/issues"
+  },
+  "homepage": "https://github.com/enioluwa23/smart-vision-sheets#readme",
+  "dependencies": {
+    "await-to-js": "^2.1.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "googleapis": "^43.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
+}
