@@ -7,9 +7,8 @@
 
 .logo {
   src: url("../svslogo.svg");
-  height: 2em;
-  width: 100%;
-
+  height: 1em;
+  width: 1em;
 }
 
 .item {
