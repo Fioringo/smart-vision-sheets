@@ -7,9 +7,9 @@ export default class Nav extends React.Component{
   render(){
     return (
       <div className="nav">
-        <Link to="/" className="logo">logo</Link>
-        <Link to="/Api" className="text">Api</Link>
-        <Link to="/Upload" className="text">Upload</Link>
+        <Link to="/"><img className="logo" src="../svslogo.svg" alt="logo"></img></Link>
+        <Link to="/Api" className="item">Api</Link>
+        <Link to="/Upload" className="item">Upload</Link>
       </div>
     );
   }
