@@ -53,15 +53,43 @@ class GSuiteClient {
   }
 
   async createGoogleSpreadsheet(filename, content) {
+    const sheets = google.sheets({
+      version: 'v4',
+      auth: this.oAuth2Client,
+    });
 
-  }
+    const createResource = {
+      properties: {
+        title: filename,
+      },
+    };
+    const [createErr, createResponse] = await to(sheets.spreadsheets.create({
+      resource: createResource,
+      fields: 'spreadsheetId',
+    }));
 
-  async deleteGoogleDocument(filename, content) {
+    if (createErr) {
+      throw createErr;
+    }
 
-  }
+    const data = {
+      ranges: ['Sheet1'],
+      values: content,
+    };
+    const updateResource = {
+      data,
+      valueInputOption: 'RAW',
+    };
+    const [updateErr, updateResponse] = await to(sheets.spreadsheets.batchUpdate({
+      spreadsheetId: createResponse.data.spreadsheetId,
+      resource: updateResource,
+    }));
 
-  async deleteGoogleSpreadsheet(filename, content) {
+    if (updateErr) {
+      throw updateErr;
+    }
 
+    return updateResponse.data;
   }
 }
 

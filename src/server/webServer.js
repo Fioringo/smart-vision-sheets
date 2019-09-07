@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const formData = require('express-form-data');
 const to = require('await-to-js').to;
-// const GSuiteClient = require('./gSuiteClient');
+require('dotenv').config();
+const GSuiteClient = new (require('./gSuiteClient'))();
 const ImageProcessor = require('../processing/imageProcessor');
 // const TextProcessor = require('../processing/textProcessor');
 
@@ -42,7 +44,7 @@ class WebServer {
     });
 
     app.post('/add_doc', async (req, res) => {
-      const [err, response] = await to(ImageProcessor.getTextFromImage(req.body.image));
+      const [err, response] = await to(GSuiteClient.createGoogleDocument(req.body.data));
       if (err) {
         res.status(500).send(err);
       } else {
@@ -50,18 +52,14 @@ class WebServer {
       }
     });
 
-    app.post('/remove_doc', async (req, res) => {
-
-    });
-
     app.post('/add_spreadsheet', async (req, res) => {
-
+      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(req.body.data));
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.send(response);
+      }
     });
-
-    app.post('/remove_spreadsheet', async (req, res) => {
-
-    });
-
     return app;
   }
 
@@ -70,7 +68,8 @@ class WebServer {
     app.use(express.static('public'));
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+    app.use(cors({ origin: 'http://localhost:3000', credentials: false }));
+    app.use(formData.parse());
     app = this.configureEndpoints(app);
     return app;
   }
