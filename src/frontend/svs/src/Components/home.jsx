@@ -1,12 +1,40 @@
 import React from 'react';
-import './App.css';
+import './home.css';
+import Upload from './upload';
 
 export default class Home extends React.Component{
 
   render(){
     return (
-      <div className="App">
-
+      <div className="home">
+        {/* <div className="image"></div> */}
+        <div className="title">
+          <div className="yellow">
+            S
+          </div>
+          <div className="grey">
+            mart
+          </div>
+          <div className="blue">
+            V
+          </div>
+          <div className="grey">
+            ision
+          </div>
+          <div className="red">
+            S
+          </div>
+          <div className="grey">
+            heets
+          </div>
+          <div className="green">
+            .ml
+          </div>
+        </div>
+        <div>
+          Convert your sheets into Google Sheets
+        </div>
+        {/* <Upload/> */}
       </div>
     );
   }
