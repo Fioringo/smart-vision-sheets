@@ -38,9 +38,9 @@ export default class Upload extends React.Component {
 
   onClickHandler = async () => {
     const formData = new FormData()
-
+console.log(this.state.selectedFile)
     this.state.selectedFile.forEach((file, i) => {
-      formData.append(i, file)
+      formData.append("file[]", file)
     })
 
     console.log(formData)
