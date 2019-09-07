@@ -15,29 +15,15 @@
     "test": "mocha test/*.test.js --timeout=20000"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "^0.28.1",
-    "@google-cloud/storage": "^3.0.0",
     "@google-cloud/translate": "^4.0.0",
     "@google-cloud/vision": "^1.0.0",
-    "nconf": "^0.10.0"
+    "await-to-js": "^2.1.1"
   },
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "^3.3.0",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-react": "^7.14.3",
-    "mocha": "^6.0.0",
-    "react": "^16.9.0"
-  },
-  "cloud-repo-tools": {
-    "requiresKeyFile": true,
-    "requiresProjectId": true,
-    "requiredEnvVars": [
-      "FUNCTIONS_BUCKET",
-      "OUTPUT_BUCKET",
-      "TRANSLATE_TOPIC",
-      "RESULT_TOPIC"
-    ]
+    "mocha": "^6.0.0"
   }
 }
