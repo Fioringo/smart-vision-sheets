@@ -4,3 +4,16 @@
   padding: 0.2em;
   text-align: center;
 }
+
+.logo {
+  src: url("../svslogo.svg");
+  height: 2em;
+  width: 100%;
+
+}
+
+.item {
+  color: #d2d2d2;
+  text-decoration: none;
+  padding: 0.2em;
+}
