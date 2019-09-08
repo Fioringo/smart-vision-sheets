@@ -1,17 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+// const formData = require('express-form-data');
 const to = require('await-to-js').to;
-// const GSuiteClient = require('./gSuiteClient');
+require('dotenv').config();
+const GSuiteClient = new (require('./gSuiteClient'))();
 const ImageProcessor = require('../processing/imageProcessor');
 // const TextProcessor = require('../processing/textProcessor');
-const multer = require('multer')
-const upload = multer({ dest: './uploads/' });
+const serviceAccount = require('../PennAppsXXServiceAccount.json');
+const admin = require('firebase-admin');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 class WebServer {
   constructor(port = 5000) {
     this.port = port;
     this.app = this.configureApp();
+    this.db = null;
 
     this.configureApp = this.configureApp.bind(this);
     this.configureEndpoints = this.configureEndpoints.bind(this);
@@ -30,10 +36,12 @@ class WebServer {
 
     });
 
-    app.post('/process_image',upload.single('file0'), async(req, res) => {
-      console.log(req)
+    app.post('/process_images', upload.array('photos'), async (req, res) => {
+      const x = 1;
+      const [err, response] = await to(Promise.all(req.files.photos.map((image) => {
+        return ImageProcessor.getTextFromImage(image.data);
+      })));
 
-      const [err, response] = await to(ImageProcessor.getTextFromImage(req.file0));
       if (err) {
         res.status(500).send(err);
       } else {
@@ -46,24 +54,73 @@ class WebServer {
     });
 
     app.post('/add_doc', async (req, res) => {
-      const [err, response] = await to(ImageProcessor.getTextFromImage(req.body.image));
+      const { filename, content, userId } = req.body;
+      const [err, response] = await to(GSuiteClient.createGoogleDocument(filename, content));
       if (err) {
         res.status(500).send(err);
       } else {
-        res.send(response);
+        const docRef = this.db.collection('users').doc(userId);
+        docRef.update({
+          docs: admin.firestore.FieldValue.arrayUnion({
+            link: response.documentId,
+            name: filename,
+          }),
+        }).then(() => {
+          res.send(response);
+        }).catch((reason) => {
+          res.status(500).send(reason);
+        });
+      }
+    });
+
+    app.post('/add_spreadsheet', async (req, res) => {
+      const { filename, content, userId } = req.body;
+      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(filename, content));
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        const docRef = this.db.collection('users').doc(userId);
+        docRef.update({
+          docs: admin.firestore.FieldValue.arrayUnion({
+            link: response.spreadsheetId,
+            name: filename,
+          }),
+        }).then(() => {
+          res.send(response);
+        }).catch((reason) => {
+          res.status(500).send(reason);
+        });
       }
     });
 
     app.post('/remove_doc', async (req, res) => {
-
-    });
-
-    app.post('/add_spreadsheet', async (req, res) => {
-
+      const { filename, userId, documentId } = req.body;
+      const docRef = this.db.collection('users').doc(userId);
+      docRef.update({
+        docs: admin.firestore.FieldValue.arrayRemove({
+          link: documentId,
+          name: filename,
+        }),
+      }).then(() => {
+        res.send(response);
+      }).catch((reason) => {
+        res.status(500).send(reason);
+      });
     });
 
     app.post('/remove_spreadsheet', async (req, res) => {
-
+      const { filename, userId, spreadsheetId } = req.body;
+      const docRef = this.db.collection('users').doc(userId);
+      docRef.update({
+        docs: admin.firestore.FieldValue.arrayRemove({
+          link: spreadsheetId,
+          name: filename,
+        }),
+      }).then(() => {
+        res.send(response);
+      }).catch((reason) => {
+        res.status(500).send(reason);
+      });
     });
 
     return app;
@@ -81,7 +138,8 @@ class WebServer {
 
   start() {
     // Initialize Firebase Cloud Firestore
-
+    admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+    this.db = admin.firestore();
     this.app.listen(this.port, () => console.log(`Server initiated, listening on port ${this.port}`));
   }
 }
