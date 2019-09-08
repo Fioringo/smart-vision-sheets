@@ -11,6 +11,7 @@ import About from "./about";
 import axios from "axios";
 import Privacy from "./privacy";
 import SheetResult from "./result";
+import FeaturePage from "./featurePage";
 
 export default class Navigation extends React.Component {
   constructor(props) {
@@ -70,7 +71,7 @@ export default class Navigation extends React.Component {
                 eventKey="Upload"
                 onSelect={this.handleSelect}
                 as={Link}
-                to="/upload"
+                to="/feature"
               >
                 Upload
               </Nav.Link>
@@ -92,6 +93,7 @@ export default class Navigation extends React.Component {
           <Route path="/about" component={About} />
           <Route path="/privacy" component={Privacy} />
           <Route path="/results" component={SheetResult} />
+          <Route path="/feature" component={FeaturePage} />
         </div>
         <Footer />
       </Router>
