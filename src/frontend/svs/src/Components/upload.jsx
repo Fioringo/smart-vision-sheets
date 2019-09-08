@@ -5,6 +5,8 @@ import FormData from "form-data";
 import Loading from "./loading";
 import { Alert, Fade } from "react-bootstrap";
 
+
+
 export default class Upload extends React.Component {
   constructor(props) {
     super(props);
@@ -127,10 +129,11 @@ export default class Upload extends React.Component {
               imgExtension={[".jpg", ".png"]}
               accept={"accept=jpg,png"}
               label={"Max file size: 5mb, accepted: jpg | png"}
-              // maxFileSize={5242880}
+              maxFileSize={5242880}
             />
             <button
               type="button"
+              style={{size: "3em", "margin-bottom": "0.7em"}}
               className="btn btn-success btn-block"
               onClick={this.onClickHandler}
               disabled={this.state.disableUpload ? false : true}

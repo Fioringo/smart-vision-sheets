@@ -1,5 +1,6 @@
 import React from "react";
 import "./home.css";
+const Link = require('react-router-dom').Link;
 let qs = require("query-string")
 
 export default class Home extends React.Component {
@@ -60,7 +61,7 @@ export default class Home extends React.Component {
           </div>
           <div className="step">
             <div className="stepTitle">{"Step"}<div className="red">{"3"}</div>:</div>
-            <div className="stepText">Upload the image here!</div>
+            <div className="stepText">Upload the image <Link to="/Upload" className="link">here!</Link></div>
           </div>
           <div className="step">
             <div className="stepTitle">{"Step" } <div className="green">4</div>:</div>
