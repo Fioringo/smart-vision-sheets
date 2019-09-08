@@ -38,6 +38,9 @@ export default class Upload extends React.Component {
   };
 
   onClickHandler = () => {
+    this.setState({
+      loading: true,
+    })
     const formData = new FormData();
     console.log(this.state.selectedFile);
     if (this.state.selectedFile) {
@@ -60,6 +63,9 @@ export default class Upload extends React.Component {
     .then((responseJson) => {
       // Perform success response.
       this.props.update(responseJson)
+      this.setState({
+        loading: false
+      })
       console.log(responseJson);
     })
     .catch((error) => {
