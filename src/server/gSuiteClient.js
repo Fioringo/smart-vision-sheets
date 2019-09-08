@@ -13,7 +13,7 @@ class GSuiteClient {
   async createAuthorizationUrl(scopes) {
     return this.oAuth2Client.generateAuthUrl({
       access_type: 'offline',
-      scopes: scopes.join(' '),
+      scope: scopes.join(' '),
     });
   }
 

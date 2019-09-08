@@ -54,18 +54,16 @@ export default class Upload extends React.Component {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        // 'Content-Type': 'multipart/form-data',
       },
       body: formData
      })
     .then((response) => response.json())
     .then((responseJson) => {
       // Perform success response.
-      this.props.update(responseJson)
       this.setState({
         loading: false
       })
-      console.log(responseJson);
+      this.props.update(responseJson)
     })
     .catch((error) => {
       this.setState({

@@ -16,6 +16,9 @@
   "bugs": {
     "url": "https://github.com/enioluwa23/smart-vision-sheets/issues"
   },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "homepage": "https://github.com/enioluwa23/smart-vision-sheets#readme",
   "dependencies": {
     "@google-cloud/translate": "^4.0.0",

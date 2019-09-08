@@ -6,7 +6,7 @@ require('dotenv').config();
 const GSuiteClient = new (require('./gSuiteClient'))();
 const ImageProcessor = require('./imageProcessor');
 // const TextProcessor = require('./processing/textProcessor');
-const serviceAccount = require('../PennAppsXXServiceAccount.json');
+const serviceAccount = require('./PennAppsXXServiceAccount.json');
 const admin = require('firebase-admin');
 const multer = require('multer');
 const storage = multer.memoryStorage();
@@ -43,8 +43,8 @@ class WebServer {
   }
 
   configureEndpoints(app) {
-    app.get('/login', (req, res) => {
-      const authorizeUrl = GSuiteClient.createAuthorizationUrl(SCOPES);
+    app.get('/login', async (req, res) => {
+      const authorizeUrl = await GSuiteClient.createAuthorizationUrl(SCOPES);
       res.redirect(authorizeUrl);
     });
 
@@ -156,7 +156,7 @@ class WebServer {
 
   configureApp() {
     let app = express();
-    app.use(express.static('public'));
+    app.use(express.static(__dirname + '/public'));
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
