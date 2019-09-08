@@ -68,13 +68,21 @@ export default class Upload extends React.Component {
       console.log(responseJson);
     })
     .catch((error) => {
-        console.log(error)
-        console.log(["Ops, something Went Wrong."]);
+      this.setState({
+        loading: false
+      })
+      console.log(error)
+      console.log(["Ops, something Went Wrong."]);
     });
   };
 
   onDrop = e => {
-    let selectIndex = this.state.selectedFile.length - 1
+    let selectIndex
+    if(this.state.selectedFile != null){
+      selectIndex = this.state.selectedFile.length - 1
+    } else {
+      selectIndex = 0
+    }
     this.setState({
       selectedFile: e[selectIndex]
     });
