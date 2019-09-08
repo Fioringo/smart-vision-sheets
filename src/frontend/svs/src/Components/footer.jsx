@@ -8,7 +8,7 @@ export default class Footer extends React.Component{
     return (
       <div className="footer">
         <div className="source">
-          <Link to="/about" className="link aboutLink">About</Link><Link to="/privacy" className="link privacyLink">Privacy</Link><Link to="/home" className="link homeLink">Home</Link>
+          <Link to="/about" className="link aboutLink">About</Link><Link to="/privacy" className="link privacyLink">Privacy</Link><Link to="/" className="link homeLink">Home</Link>
           <div>
             This project is available on <a href="https://github.com/enioluwa23/smart-vision-sheets" className="link">GitHub</a>
           </div>
