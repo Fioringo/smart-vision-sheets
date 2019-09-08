@@ -42,7 +42,6 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.14.3",
-    "react-csv-downloader": "^1.1.0",
-    "react-hot-loader": "^4.5.3"
+    "react-csv-downloader": "^1.1.0"
   }
 }

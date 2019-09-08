@@ -11,6 +11,7 @@ import Privacy from "./privacy";
 import SheetResult from "./result";
 import FeaturePage from "./featurePage";
 import LogOut from "./logout";
+const BASE_DOMAIN = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000"
 
 export default class Navigation extends React.Component {
   constructor(props) {
@@ -70,7 +71,7 @@ export default class Navigation extends React.Component {
                 className="item"
                 eventKey="Login"
                 onSelect={this.handleSelect}
-                href={this.state.loggedIn ? "/logout" : "http://localhost:5000/login"}
+                href={this.state.loggedIn ? "/logout" : `${BASE_DOMAIN}/login`}
               >
                 {this.state.loggedIn ? "Logout" : "Google Login"}
               </Nav.Link>

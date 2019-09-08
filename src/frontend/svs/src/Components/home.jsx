@@ -6,18 +6,26 @@ let qs = require("query-string")
 export default class Home extends React.Component {
 
   constructor(props) {
-    super(props)
-    const params = qs.parse();
-    const {accessToken, refreshToken, loggedIn } = params;
+    super(props);
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     this.state = {
-      loggedIn: loggedIn ? true : false,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      loggedIn: accessToken !== null,
+      accessToken,
+      refreshToken,
     }
   }
 
   componentDidMount = () => {
-    if(this.state.loggedIn){
+    const params = qs.parse();
+    console.log(params);
+    const {accessToken, refreshToken, loggedIn } = params;
+    this.setState({
+      loggedIn: loggedIn ? true : false,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    });
+    if(this.state.loggedIn) {
       localStorage.setItem("accessToken", this.state.accessToken)
       localStorage.setItem("refreshToken", this.state.refreshToken)
     }
@@ -28,7 +36,7 @@ export default class Home extends React.Component {
     const currUrl= window.location.href;
     const resetUrl = currUrl.substring(0, currUrl.lastIndexOf('#'));
     const currState = window.history.state;
-    window.history.replaceState(currState, "App Title", resetUrl);
+    window.history.replaceState(currState, "SVS", resetUrl);
   }
 
   render() {
@@ -61,7 +69,7 @@ export default class Home extends React.Component {
           </div>
           <div className="step">
             <div className="stepTitle">{"Step"}<div className="red">{"3"}</div>:</div>
-            <div className="stepText">Upload the image <Link to="/Upload" className="link">here!</Link></div>
+            <div className="stepText">Upload the image <Link to="/feature" className="link">here!</Link></div>
           </div>
           <div className="step">
             <div className="stepTitle">{"Step" } <div className="green">4</div>:</div>

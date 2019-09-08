@@ -3,9 +3,7 @@ import ImageUploader from "react-images-upload";
 import "./upload.css";
 import FormData from "form-data";
 import Loading from "./loading";
-import { Alert, Fade } from "react-bootstrap";
-
-
+import { Alert } from "react-bootstrap";
 
 export default class Upload extends React.Component {
   constructor(props) {
@@ -30,9 +28,9 @@ export default class Upload extends React.Component {
   };
 
   endableTitle = e => {
-    this.setState({
-      hasTitle: true
-    });
+    this.setState((prevState) => ({
+      hasTitle: !prevState.hasTitle
+    }));
   };
 
   onFileLoadEnd = e => {
@@ -67,11 +65,11 @@ export default class Upload extends React.Component {
       .then(response => response.json())
       .then(responseJson => {
         // Perform success response.
-        this.props.update(responseJson);
         this.setState({
           disableUpload: true,
           loading: false
         });
+        this.props.update(responseJson);
         console.log(responseJson);
       })
       .catch(error => {

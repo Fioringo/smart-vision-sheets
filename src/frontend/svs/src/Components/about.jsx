@@ -12,6 +12,7 @@ export default class About extends React.Component {
         <div className="title">
           <div className="yellow">A</div>bout
         </div>
+        <hr />
         <div className="aboutText">
           The purpose of this project is to automate the tedious task of
           entering values into a spreadsheet. 

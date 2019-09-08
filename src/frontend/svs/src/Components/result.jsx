@@ -5,9 +5,8 @@ import Button from "react-bootstrap/Button";
 import CSVLogo from "../images/csv-file-format-extension.svg";
 import GoogleSheets from "../images/Google sheets.svg";
 import Axios from "axios";
-import { CSVLink, CSVDownload } from "react-csv"
-import { NavItem } from "react-bootstrap";
 const ListGroup = require("react-bootstrap").ListGroup
+const BASE_DOMAIN = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000"
 
 export default class SheetResult extends React.Component {
   constructor(props) {
@@ -18,7 +17,7 @@ export default class SheetResult extends React.Component {
   }
 
   componentDidMount = () => {
-    Axios.get('http://localhost:5000/')
+    Axios.post(`${BASE_DOMAIN}/get_spreadsheets`,)
     .then((res) => {
       this.setState({
         previousProjects: res
@@ -42,7 +41,7 @@ export default class SheetResult extends React.Component {
 
   render() {
     let previousSheets
-    if(this.state.previousProjects != []){
+    if(this.state.previousProjects !== []){
       var prevProjTemp = this.state.previousProjects
       previousSheets = prevProjTemp.map((e) => {
         return <ListGroup.Item key={e.name} action href={e.link}>
