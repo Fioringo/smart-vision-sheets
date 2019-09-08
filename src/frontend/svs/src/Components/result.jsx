@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import CSVLogo from "../images/csv-file-format-extension.svg";
 import GoogleSheets from "../images/Google sheets.svg";
 import Axios from "axios";
+import { CSVLink, CSVDownload } from "react-csv"
 const ListGroup = require("react-bootstrap").ListGroup
 const BASE_DOMAIN = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000"
 
@@ -12,7 +13,8 @@ export default class SheetResult extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      previousProjects: []
+      previousProjects: [],
+      data: []
     };
   }
 
@@ -66,9 +68,7 @@ export default class SheetResult extends React.Component {
             <Card.Img variant="top" src={CSVLogo} />
             <Card.Body>
               <Card.Title>CSV File</Card.Title>
-              {/* {this.props.data !== null ? <CSVLink data={this.props.data}>Download</CSVLink> : null} */}
-                <Button variant="warning">Download</Button>
-
+              {this.state.data !== null ? <CSVLink data={this.state.data}><Button variant="warning">Download</Button></CSVLink> : null}
             </Card.Body>
           </Card>
           <Card
