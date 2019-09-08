@@ -13,4 +13,9 @@
   color: #FFF;
   text-decoration: none;
   padding: 0.2em;
+  margin-left: 0.5em;
+}
+
+.nav-bar {
+  background-color: #1e1e1e;
 }

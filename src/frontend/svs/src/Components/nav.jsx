@@ -4,7 +4,6 @@ import "./nav.css";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Home from "./home";
-import Api from "./api";
 import Footer from "./footer";
 import Upload from "./upload";
 import About from "./about";
@@ -44,7 +43,6 @@ export default class Navigation extends React.Component {
     return (
       <Router>
         <Navbar
-          bg="dark"
           variant="dark"
           expand="lg"
           fixed="top"
@@ -57,7 +55,7 @@ export default class Navigation extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link
+              {/*<Nav.Link
                 className="item"
                 eventKey="API"
                 onSelect={this.handleSelect}
@@ -65,7 +63,7 @@ export default class Navigation extends React.Component {
                 to="/api"
               >
                 API
-              </Nav.Link>
+              </Nav.Link>*/}
               <Nav.Link
                 className="item"
                 eventKey="Upload"
@@ -88,7 +86,6 @@ export default class Navigation extends React.Component {
         </Navbar>
         <div className="content">
           <Route path="/" exact component={Home} />
-          <Route path="/api" component={Api} />
           <Route path="/upload" component={Upload} />
           <Route path="/about" component={About} />
           <Route path="/privacy" component={Privacy} />

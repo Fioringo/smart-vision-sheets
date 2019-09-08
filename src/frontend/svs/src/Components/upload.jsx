@@ -2,7 +2,6 @@ import React from "react";
 import ImageUploader from "react-images-upload";
 import "./upload.css";
 import FormData from 'form-data'
-import Link from 'react-router-dom/Link'
 import Loading from './loading'
 
 export default class Upload extends React.Component {
