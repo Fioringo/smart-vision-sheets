@@ -123,7 +123,15 @@ const fetchAnnotations = async (imageBuffer) => {
   const req = {
     content: imageBuffer,
   };
-  const [visionErr, [detections]] = await to(VisionClient.documentTextDetection(req));
+
+  try {
+    VisionClient.documentTextDetection(req)
+    // const [visionErr, [detections]] = await Promise.all(VisionClient.documentTextDetection(req))
+  }
+  catch(err){
+    console.log('Error = ' + err);
+  }
+  
   if (visionErr) {
     throw visionErr;
   }
