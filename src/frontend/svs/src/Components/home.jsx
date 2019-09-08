@@ -1,20 +1,45 @@
 import React from "react";
 import "./home.css";
+let qs = require("query-string")
 
 export default class Home extends React.Component {
+
+  constructor(props) {
+    super(props)
+    const params = qs.parse();
+    const {accessToken, refreshToken, loggedIn } = params;
+    this.state = {
+      loggedIn: loggedIn ? true : false,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    }
+  }
+
+  componentDidMount = () => {
+    if(this.state.loggedIn){
+      localStorage.setItem("accessToken", this.state.accessToken)
+      localStorage.setItem("refreshToken", this.state.refreshToken)
+    }
+    this.resetUrl()
+  }
+
+  resetUrl = () => {
+    const currUrl= window.location.href;
+    const resetUrl = currUrl.substring(0, currUrl.lastIndexOf('#'));
+    const currState = window.history.state;
+    window.history.replaceState(currState, "App Title", resetUrl);
+  }
+
   render() {
     return (
       <div className="home">
         {/* <div className="image"></div> */}
         <div className="titleWrapper">
           <div className="title">
-            <div className="yellow">S</div>
-            <div className="grey">mart</div>
-            <div className="blue">V</div>
-            <div className="grey">ision</div>
-            <div className="red">S</div>
-            <div className="grey">heets</div>
-            <div className="green">.ml</div>
+            <span className="yellow">S</span>mart
+            <span className="blue">V</span>ision
+            <span className="red">S</span>heets
+            <span className="green">.ml</span>
           </div>
         </div>
         <div className="description">

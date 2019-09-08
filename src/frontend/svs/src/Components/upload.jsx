@@ -1,8 +1,8 @@
 import React from "react";
-import axios from "axios";
 import ImageUploader from "react-images-upload";
 import "./upload.css";
 import FormData from 'form-data'
+import Loading from './loading'
 
 export default class Upload extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ export default class Upload extends React.Component {
 
   onChangeHandler = event => {
     this.setState({
-      // selectedFile: event,
       selectedFile: event.target.files[0],
       loaded: 0
     });
@@ -38,47 +37,61 @@ export default class Upload extends React.Component {
   };
 
   onClickHandler = () => {
+    this.setState({
+      loading: true,
+    })
     const formData = new FormData();
     console.log(this.state.selectedFile);
-    // this.state.selectedFile.forEach((file, i) => {
-    // formData.append('file', this.state.selectedFile, this.state.selectedFile.name);
-    // });
-
     if (this.state.selectedFile) {
       formData.append('file0', this.state.selectedFile);
-      formData.append('hasTitle', this.state.hasTitle);
     }
+
+    formData.append('hasTitle', this.state.hasTitle)
 
     console.log(formData)
 
-    fetch('http://localhost:5000/process_image', {
+    fetch( 'http://localhost:5000/process_image', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
+        // 'Content-Type': 'multipart/form-data',
       },
       body: formData
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        // Perform success response.
-        console.log(responseJson);
+     })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      // Perform success response.
+      this.props.update(responseJson)
+      this.setState({
+        loading: false
       })
-      .catch((error) => {
-        console.log(error)
-        console.log("Ops, something Went Wrong.");
-      });
+      console.log(responseJson);
+    })
+    .catch((error) => {
+      this.setState({
+        loading: false
+      })
+      console.log(error)
+      console.log(["Ops, something Went Wrong."]);
+    });
   };
 
   onDrop = e => {
-    console.log(e);
+    let selectIndex
+    if(this.state.selectedFile != null){
+      selectIndex = this.state.selectedFile.length - 1
+    } else {
+      selectIndex = 0
+    }
     this.setState({
-      selectedFile: e[0]
+      selectedFile: e[selectIndex]
     });
   };
 
   render() {
     return (
       <div className="container">
+      {this.state.loading ? <Loading/> : null}
         <div className="title">
           <div className="yellow">U</div>pload <div className="blue">Y</div>our{" "}
           <div className="red"> I</div>mage!
@@ -100,7 +113,7 @@ export default class Upload extends React.Component {
               imgExtension={[".jpg", ".png"]}
               accept={'accept=jpg,png'}
               label={'Max file size: 5mb, accepted: jpg | png'}
-            // maxFileSize={5242880}
+              // maxFileSize={5242880}
             />
             <button
               type="button"
