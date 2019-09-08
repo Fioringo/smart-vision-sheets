@@ -56,7 +56,7 @@ class WebServer {
     });
 
     app.post('/process_image', upload.single('file0'), async (req, res) => {
-      const hasTitle = Boolean(req.body.hasTitle);
+      const hasTitle = req.body.hasTitle.toLowerCase() === 'true';
       const base64Img = Buffer.from(req.file.buffer, 'base64');
       const [csvErr, csvResponse] = await to(ImageProcessor.getCSVFromImage(base64Img, hasTitle));
       if (csvErr) {
