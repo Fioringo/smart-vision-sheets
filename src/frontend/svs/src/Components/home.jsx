@@ -9,10 +9,12 @@ export default class Home extends React.Component {
     super(props);
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
+    const userId = localStorage.getItem('userId');
     this.state = {
       loggedIn: accessToken !== null,
       accessToken,
       refreshToken,
+      userId,
     }
   }
 
@@ -28,6 +30,7 @@ export default class Home extends React.Component {
     if(this.state.loggedIn) {
       localStorage.setItem("accessToken", this.state.accessToken)
       localStorage.setItem("refreshToken", this.state.refreshToken)
+      localStorage.setItem("userId", this.state.userId)
     }
     this.resetUrl()
   }
