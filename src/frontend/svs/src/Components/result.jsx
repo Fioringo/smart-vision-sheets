@@ -6,11 +6,30 @@ import CSVLogo from "../images/csv-file-format-extension.svg";
 import GoogleSheets from "../images/Google sheets.svg";
 import Axios from "axios";
 import { CSVLink, CSVDownload } from "react-csv"
+import { NavItem } from "react-bootstrap";
+const ListGroup = require("react-bootstrap").ListGroup
 
 export default class SheetResult extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      previousProjects: []
+    };
+  }
+
+  componentDidMount = () => {
+    Axios.get('http://localhost:5000/')
+    .then((res) => {
+      this.setState({
+        previousProjects: res
+      })
+    })
+    .catch((err) => {
+      this.setState({
+        error: err,
+        previousProjects: []
+      })
+    })
   }
 
   startAgain = () => {
@@ -22,6 +41,15 @@ export default class SheetResult extends React.Component {
   };
 
   render() {
+    let previousSheets
+    if(this.state.previousProjects != []){
+      var prevProjTemp = this.state.previousProjects
+      previousSheets = prevProjTemp.map((e) => {
+        return <ListGroup.Item key={e.name} action href={e.link}>
+          {e.name}
+        </ListGroup.Item>
+      })
+    }
     return (
       <div className="about">
         <div className="title">
@@ -61,6 +89,9 @@ export default class SheetResult extends React.Component {
         <Button onClick={this.startAgain} variant="danger">
           <span className="glyphicon glyphicon-repeat"></span>Start Over
         </Button>
+        <ListGroup defaultActiveKey="/results">
+          {previousSheets}
+        </ListGroup>
       </div>
     );
   }
