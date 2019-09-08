@@ -8,6 +8,7 @@ import Axios from "axios";
 import { CSVLink } from "react-csv";
 const ListGroup = require("react-bootstrap").ListGroup;
 const Alert = require("react-bootstrap").Alert;
+const Form = require("react-bootstrap").Form;
 const BASE_DOMAIN =
   process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
 
@@ -18,8 +19,10 @@ export default class SheetResult extends React.Component {
       previousProjects: [],
       data: [],
       fileName: "",
-      loggedIn: false,
-      sheetCreated: null
+      loggedIn: true, //here
+      sheetCreated: null,
+      googleName: "",
+      csvName: ""
     };
   }
 
@@ -66,6 +69,12 @@ export default class SheetResult extends React.Component {
       .catch(err => {});
   };
 
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
   render() {
     let previousSheets;
     if (this.state.previousProjects !== []) {
@@ -78,7 +87,7 @@ export default class SheetResult extends React.Component {
         );
       });
     }
-    
+
     let AddToGoogleSheet = (
       <Card
         bg="primary"
@@ -88,6 +97,14 @@ export default class SheetResult extends React.Component {
         <Card.Img variant="top" src={GoogleSheets} />
         <Card.Body>
           <Card.Title>Google Sheets</Card.Title>
+          <Form.Control
+            type="text"
+            placeholder="Sheet Name"
+            onChange={this.handleChange}
+            name="googleName"
+            value={this.state.googleName}
+            style={{ marginBottom: "0.2em" }}
+          />
           <Button variant="warning" onClick={this.createSheet}>
             Add to Sheets
           </Button>
@@ -98,7 +115,12 @@ export default class SheetResult extends React.Component {
     let GoogleSuccessAlert = (
       <Alert variant="success">
         <Alert.Heading
-          style={{ width: "12rem", height: "20rem", margin: "0.4em", padding: "0.2em" }}
+          style={{
+            width: "12rem",
+            height: "25rem",
+            margin: "0.4em",
+            padding: "0.2em"
+          }}
         >
           Success!
         </Alert.Heading>
@@ -127,12 +149,24 @@ export default class SheetResult extends React.Component {
             }}
             className="text-center"
           >
-            <Card.Img variant="top" src={CSVLogo} />
+            <Card.Img
+              variant="top"
+              src={CSVLogo}
+              style={{ marginTop: "0.0em" }}
+            />
             <Card.Body>
               <Card.Title>CSV File</Card.Title>
+              <Form.Control
+                type="text"
+                placeholder="File Name"
+                onChange={this.handleChange}
+                name="csvName"
+                value={this.state.csvName}
+                style={{ marginBottom: "0.2em", marginTop: "0.2em" }}
+              />
               {this.state.data !== null ? (
-                <CSVLink data={this.state.data}>
-                  <Button variant="warning">Download</Button>
+                <CSVLink data={this.state.data} filename={this.state.csvName + ".csv"}>
+                  <Button variant="warning">Download CSV</Button>
                 </CSVLink>
               ) : null}
             </Card.Body>
