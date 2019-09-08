@@ -5,6 +5,8 @@ const to = require('await-to-js').to;
 // const GSuiteClient = require('./gSuiteClient');
 const ImageProcessor = require('../processing/imageProcessor');
 // const TextProcessor = require('../processing/textProcessor');
+const multer = require('multer')
+const upload = multer({ dest: './uploads/' });
 
 class WebServer {
   constructor(port = 5000) {
@@ -28,8 +30,10 @@ class WebServer {
 
     });
 
-    app.post('/process_image', async (req, res) => {
-      const [err, response] = await to(ImageProcessor.getTextFromImage(req.body.image));
+    app.post('/process_image',upload.single('file0'), async(req, res) => {
+      console.log(req)
+
+      const [err, response] = await to(ImageProcessor.getTextFromImage(req.file0));
       if (err) {
         res.status(500).send(err);
       } else {
