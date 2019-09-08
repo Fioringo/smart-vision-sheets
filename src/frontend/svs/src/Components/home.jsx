@@ -1,7 +1,35 @@
 import React from "react";
 import "./home.css";
+let qs = require("query-string")
 
 export default class Home extends React.Component {
+
+  constructor(props) {
+    super(props)
+    const params = qs.parse();
+    const {accessToken, refreshToken, loggedIn } = params;
+    this.state = {
+      loggedIn: loggedIn ? true : false,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    }
+  }
+
+  componentDidMount = () => {
+    if(this.state.loggedIn){
+      localStorage.setItem("accessToken", this.state.accessToken)
+      localStorage.setItem("refreshToken", this.state.refreshToken)
+    }
+    this.resetUrl()
+  }
+
+  resetUrl = () => {
+    const currUrl= window.location.href;
+    const resetUrl = currUrl.substring(0, currUrl.lastIndexOf('#'));
+    const currState = window.history.state;
+    window.history.replaceState(currState, "App Title", resetUrl);
+  }
+
   render() {
     return (
       <div className="home">
