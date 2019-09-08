@@ -15,9 +15,9 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Server",
-      "program": "${workspaceFolder}\\src\\server\\index.js",
+      "program": "${workspaceFolder}/src/server/index.js",
       "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "${workspaceFolder}\\src\\PennAppsXX-fbaf15f9bebf.json"
+        "GOOGLE_APPLICATION_CREDENTIALS": "${workspaceFolder}/src/PennAppsXX-fbaf15f9bebf.json"
       }
     }
   ]
