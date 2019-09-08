@@ -1,1 +1,5 @@
 node_modules
+test.json
+PennApps*.json
+**/.DS_Store
+**/.env
