@@ -65,8 +65,17 @@ export default class SheetResult extends React.Component {
       userId: localStorage.getItem("userId")
     };
     Axios.post(`${BASE_DOMAIN}/add_spreadsheet`, this.props.data)
-      .then(res => {})
-      .catch(err => {});
+      .then(res => {
+        this.setState({
+          sheetCreated: true
+        })
+      })
+      .catch(err => {
+        this.setState({
+          sheetCreated: false,
+        })
+        console.log(err)
+      });
   };
 
   handleChange = e => {
@@ -181,7 +190,7 @@ export default class SheetResult extends React.Component {
           <span className="glyphicon glyphicon-repeat"></span>Start Over
         </Button>
         <ListGroup defaultActiveKey="/results">{previousSheets}</ListGroup>
-        {this.state.sheetCreated === true ? (
+        {this.state.sheetCreated === false ? (
           <Alert variant="danger" dismissible={true} onClose={this.resetAlert}>
             Error: Sheet wasn't created!
           </Alert>
