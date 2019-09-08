@@ -15,13 +15,13 @@ export default class Api extends React.Component {
               <code>https://svisions.tech/api/image</code>
             </div>
             <div className="apiExample">
-              <div className="language">
-                JavaScript
-              </div>
+              <div className="language">JavaScript</div>
               <code>
-                ...<br/>
-                axios.post('https://svisions.tech/api/image',image)<br/>
-                ...<br/>
+                {/* ...<br/> */}
+                <div>...</div>
+                <div>axios.post('https://svisions.tech/api/image',image)</div>
+                <div>...</div>
+                {/* ...<br/> */}
               </code>
             </div>
           </div>
