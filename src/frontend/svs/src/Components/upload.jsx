@@ -1,8 +1,9 @@
 import React from "react";
-import axios from "axios";
 import ImageUploader from "react-images-upload";
 import "./upload.css";
 import FormData from 'form-data'
+import Link from 'react-router-dom/Link'
+import Loading from './loading'
 
 export default class Upload extends React.Component {
   constructor(props) {
@@ -19,7 +20,6 @@ export default class Upload extends React.Component {
 
   onChangeHandler = event => {
     this.setState({
-      // selectedFile: event,
       selectedFile: event.target.files[0],
       loaded: 0
     });
@@ -40,18 +40,11 @@ export default class Upload extends React.Component {
   onClickHandler = () => {
     const formData = new FormData();
     console.log(this.state.selectedFile);
-    // this.state.selectedFile.forEach((file, i) => {
-    // formData.append('file', this.state.selectedFile, this.state.selectedFile.name);
-    // });
-
     if (this.state.selectedFile) {
-      var photo = {
-        uri: this.state.selectedFile.uri,
-        type: this.state.selectedFile.type,
-        name: this.state.selectedFile.fileName,
-      };
       formData.append('file0', this.state.selectedFile);
     }
+
+    formData.append('hasTitle', this.state.hasTitle)
 
     console.log(formData)
 
@@ -66,60 +59,26 @@ export default class Upload extends React.Component {
     .then((response) => response.json())
     .then((responseJson) => {
       // Perform success response.
+      this.props.update(responseJson)
       console.log(responseJson);
     })
     .catch((error) => {
         console.log(error)
         console.log(["Ops, something Went Wrong."]);
     });
-
-/*
-    console.log('formData = ' + JSON.stringify(formData));
-
-    this.setState({
-      selectedFile: []
-    });
-
-    axios.post('http://localhost:5000/process_image', {data: formData}, {config: {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      }
-    }})
-    .then((resp)=>{
-      console.log(`Response from file upload = ${JSON.stringify(resp)}`)
-    }).catch((err)=>{
-      console.log(err);
-    });
-*/
-    // axios({
-    //   method: "post",
-    //   processData: false,
-    //   contentType: "multipart/form-data",
-    //   cache: false,
-    //   url: "http://localhost:5000/process_image",
-    //   // url: "http://localhost:3000/process_image",
-    //   data: formData,
-    //   //add
-    //   config: { headers: formData.get(Headers) }
-    // }).then((resp)=>{
-    //   console.log(`Response from file upload = ${JSON.stringify(resp)}`)
-    // }).catch((err)=>{
-    //   console.log(err);
-    // });
   };
 
   onDrop = e => {
-    console.log(e);
-    // let tempPictures = this.state.pictures
-    // tempPictures.concat(e)
+    let selectIndex = this.state.selectedFile.length - 1
     this.setState({
-      selectedFile: e[0]
+      selectedFile: e[selectIndex]
     });
   };
 
   render() {
     return (
       <div className="container">
+      {this.state.loading ? <Loading/> : null}
         <div className="title">
           <div className="yellow">U</div>pload <div className="blue">Y</div>our{" "}
           <div className="red"> I</div>mage!
@@ -135,18 +94,6 @@ export default class Upload extends React.Component {
               />
               {"  Has Title"}
             </div>
-            {/* <form method="post" action="#" id="#">
-              <div className="form-group files color">
-                <label>Upload Your File </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="file"
-                  multiple
-                  onChange={this.onDrop}
-                />
-              </div>
-            </form> */}
             <ImageUploader
               withIcon={true}
               onChange={this.onDrop}
