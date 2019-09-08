@@ -80,7 +80,7 @@ class ImageProcessor {
         recordsMap[name] = [];
       });
 
-      const indexToStart = firstFields.length + 1;
+      const indexToStart = firstFields.length;
       for (const block of blocks.slice(hasTitle + indexToStart)) {
         if (block.confidence < minConfidence) {
           continue;
@@ -93,16 +93,17 @@ class ImageProcessor {
       }
 
       for (let i = 0; ; i++) {
-        let empty = true;
+        let ended = true;
         for (const field in recordsMap) {
           if (Object.prototype.hasOwnProperty.call(recordsMap, field)) {
-            if (recordsMap[field][i] !== undefined) {
-              empty = false;
+            if (recordsMap[field].length > i ) {
+              ended = false;
+              break;
             }
           }
         }
 
-        if (empty) {
+        if (ended) {
           break;
         }
 

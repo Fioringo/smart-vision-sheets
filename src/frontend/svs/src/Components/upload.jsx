@@ -106,6 +106,7 @@ export default class Upload extends React.Component {
   render() {
     return (
       <div className="container">
+      {this.state.loading ? <Loading/> : null}
         <div className="title">
           <div className="yellow">U</div>pload <div className="blue">Y</div>our{" "}
           <div className="red"> I</div>mage!

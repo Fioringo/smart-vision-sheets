@@ -12,6 +12,8 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const qs = require('querystring');
+const jwtDecode = require('jwt-decode');
+
 const BASE_DOMAIN = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : '';
 const SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets',
@@ -50,13 +52,18 @@ class WebServer {
 
     app.get('/callback', async (req, res) => {
       const { code } = req.query;
-      const { tokens } = GSuiteClient.oAuth2Client.getToken(code);
+      const { tokens } = await GSuiteClient.oAuth2Client.getToken(code);
       GSuiteClient.oAuth2Client.credentials = tokens;
-      res.redirect(`${BASE_DOMAIN}/#${qs.stringify({ tokens })}`);
+      const { sub } = jwtDecode(tokens.id_token);
+      res.redirect(`${BASE_DOMAIN}/#${qs.stringify({
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        userId: sub,
+      })}`);
     });
 
     app.post('/process_image', upload.single('file0'), async (req, res) => {
-      const hasTitle = Boolean(req.body.hasTitle);
+      const hasTitle = req.body.hasTitle.toLowerCase() === 'true';
       const base64Img = Buffer.from(req.file.buffer, 'base64');
       const [csvErr, csvResponse] = await to(ImageProcessor.getCSVFromImage(base64Img, hasTitle));
       if (csvErr) {
