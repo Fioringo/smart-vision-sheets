@@ -4,6 +4,7 @@ import "./upload.css";
 import FormData from "form-data";
 import Loading from "./loading";
 import { Alert } from "react-bootstrap";
+const BASE_DOMAIN = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000"
 
 export default class Upload extends React.Component {
   constructor(props) {
@@ -54,7 +55,7 @@ export default class Upload extends React.Component {
 
     console.log(formData);
 
-    fetch("http://localhost:5000/process_image", {
+    fetch(`${BASE_DOMAIN}/process_image`, {
       method: "POST",
       headers: {
         Accept: "application/json"
@@ -128,10 +129,16 @@ export default class Upload extends React.Component {
               accept={"accept=jpg,png"}
               label={"Max file size: 5mb, accepted: jpg | png"}
               maxFileSize={5242880}
-            />
+              withPreview={true}
+              singleImage={true}
+            >
+            {/* <div className="grey">
+            {this.state.selectedFile === null ? null : this.state.selectedFile.name}
+            </div> */}
+            </ImageUploader>
             <button
               type="button"
-              style={{size: "3em", "margin-bottom": "0.7em"}}
+              style={{size: "3em", "marginBottom": "0.7em"}}
               className="btn btn-success btn-block"
               onClick={this.onClickHandler}
               disabled={this.state.disableUpload ? false : true}
