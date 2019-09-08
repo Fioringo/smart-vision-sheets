@@ -129,10 +129,9 @@ class WebServer {
   configureApp() {
     let app = express();
     app.use(express.static('public'));
-    // app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.raw());
-    app.use(cors({ origin: 'http://localhost:3000', credentials: false }));
-    // app.use(formData.parse());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+    app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
     app = this.configureEndpoints(app);
     return app;
   }

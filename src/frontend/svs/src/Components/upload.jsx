@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
-import ImageUploader from "react-images-upload"
-import "./upload.css"
+import ImageUploader from "react-images-upload";
+import "./upload.css";
+import FormData from 'form-data'
 
 export default class Upload extends React.Component {
   constructor(props) {
@@ -18,8 +19,8 @@ export default class Upload extends React.Component {
 
   onChangeHandler = event => {
     this.setState({
-      selectedFile: event,
-      // selectedFile: event.target.files[0],
+      // selectedFile: event,
+      selectedFile: event.target.files[0],
       loaded: 0
     });
   };
@@ -31,79 +32,98 @@ export default class Upload extends React.Component {
   };
 
   onFileLoadEnd = e => {
-    const content = e.result
-    console.log("File load ended")
-    console.log(content)
-  }
+    const content = e.result;
+    console.log("File load ended");
+    console.log(content);
+  };
 
-  onClickHandler = async () => {
-    const formData = new FormData()
+  onClickHandler = () => {
+    const formData = new FormData();
+    console.log(this.state.selectedFile);
+    // this.state.selectedFile.forEach((file, i) => {
+    // formData.append('file', this.state.selectedFile, this.state.selectedFile.name);
+    // });
 
-    this.state.selectedFile.forEach((file, i) => {
-      formData.append(i, file)
-    })
+    if (this.state.selectedFile) {
+      var photo = {
+        uri: this.state.selectedFile.uri,
+        type: this.state.selectedFile.type,
+        name: this.state.selectedFile.fileName,
+      };
+      formData.append('file0', this.state.selectedFile);
+    }
 
     console.log(formData)
 
+    fetch( 'http://localhost:5000/process_image', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        // 'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+     })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      // Perform success response.
+      console.log(responseJson);
+    })
+    .catch((error) => {
+        console.log(error)
+        console.log(["Ops, something Went Wrong."]);
+    });
+
+/*
+    console.log('formData = ' + JSON.stringify(formData));
+
     this.setState({
       selectedFile: []
-    })
-    // let fr = new FileReader()
+    });
 
-    // fr.addEventListener("load", function () {
-      // preview.src = fr.result;
-    // }, false);
-  
-    // if (this.state.selectedFile) {
-    //   fr.readAsDataURL(this.state.selectedFile);
-    //   console.log(fr)
-    // }
-
-    // console.log(this.state.selectedFile)
-    // fr.onloadend(this.onFileLoadEnd)
-    // fr.readAsArrayBuffer(this.state.selectedFile)
-    // fr.readAsDataURL(this.state.selectedFile)
-    // let imageBinary
-    // console.log(imageBinary)
-    // const data = new FormData();
-    // data.append("file", this.state.selectedFile, this.state.selectedFile.name);
-    // data.append("hasTitle", this.state.hasTitle);
-    // imageBinary = await fetch(this.state.selectedFile);
-    // imageBinary = new Buffer.from(imageBinary, 'binary').toString('base64')
-
-
-
-    // axios.post("/process_image", { image: imageBinary }).then(response => {
-    //   this.setState({
-    //     loading: false,
-    //     responseSuccess: response.data.success,
-    //     response: response.data,
-    //     pictures: []
-    //   });
+    axios.post('http://localhost:5000/process_image', {data: formData}, {config: {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    }})
+    .then((resp)=>{
+      console.log(`Response from file upload = ${JSON.stringify(resp)}`)
+    }).catch((err)=>{
+      console.log(err);
+    });
+*/
+    // axios({
+    //   method: "post",
+    //   processData: false,
+    //   contentType: "multipart/form-data",
+    //   cache: false,
+    //   url: "http://localhost:5000/process_image",
+    //   // url: "http://localhost:3000/process_image",
+    //   data: formData,
+    //   //add
+    //   config: { headers: formData.get(Headers) }
+    // }).then((resp)=>{
+    //   console.log(`Response from file upload = ${JSON.stringify(resp)}`)
+    // }).catch((err)=>{
+    //   console.log(err);
     // });
-
-
-
-    // axios.post("http://localhost:8000/upload", data, { // receive two parameter endpoint url ,form data
-    //   })
-    //   .then(res => { // then print response status
-    //     console.log(res.statusText)
-    // })
   };
 
-  onDrop = (e) => {
-    console.log(e)
+  onDrop = e => {
+    console.log(e);
     // let tempPictures = this.state.pictures
     // tempPictures.concat(e)
     this.setState({
-      selectedFile: e
-    })
-  }
+      selectedFile: e[0]
+    });
+  };
 
   render() {
     return (
       <div className="container">
-        <div className="title">Upload Your Image!</div>
+        <div className="title">
+          <div className="yellow">U</div>pload <div className="blue">Y</div>our{" "}
+          <div className="red"> I</div>mage!
+        </div>
         <div className="row">
           <div className="col-md-6">
             <div>
@@ -113,7 +133,6 @@ export default class Upload extends React.Component {
                 value={this.state.hasTitle}
                 id="hasTitle"
               />
-              {/* <label>{"     Has Title"}</label> */}
               {"  Has Title"}
             </div>
             {/* <form method="post" action="#" id="#">
@@ -124,14 +143,16 @@ export default class Upload extends React.Component {
                   className="form-control"
                   id="file"
                   multiple
-                  onChange={this.onChangeHandler}
+                  onChange={this.onDrop}
                 />
               </div>
             </form> */}
             <ImageUploader
               withIcon={true}
               onChange={this.onDrop}
-              imgExtension={['.jpg', '.png']}
+              imgExtension={[".jpg", ".png"]}
+              accept={'accept=jpg,png'}
+              label={'Max file size: 5mb, accepted: jpg | png'}
               // maxFileSize={5242880}
             />
             <button

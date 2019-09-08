@@ -23,7 +23,7 @@
 
 .link:hover {
   cursor: pointer;
-  text-decoration: none;
+  text-decoration: underline;
   color: #FFF;
 }
 
