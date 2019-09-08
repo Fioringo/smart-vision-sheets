@@ -4,11 +4,16 @@ const Link = require('react-router-dom').Link
 const Button = require('react-bootstrap').Button
 
 export default class LogOut extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount = () => {
-    localStorage.removeItem("accessToken")
-    localStorage.removeItem("refreshToken")
-    localStorage.removeItem("userId")
+    window.localStorage.removeItem("accessToken")
+    window.localStorage.removeItem("refreshToken")
+    window.localStorage.removeItem("userId")
+    this.props.logoutHandler();
+    this.props.history.push('/');
   }
 
   render() {

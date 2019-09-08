@@ -24,14 +24,26 @@ export default class Navigation extends React.Component {
   }
 
   componentDidMount() {
-    if(localStorage.getItem("accessToken") !== null){
+    if (window.localStorage.getItem("accessToken") !== null) {
       this.setState({
         loggedIn: true
       })
     }
   }
 
-  handleSelect = page => this.setState({ activeKey: page });
+  handleLogout = () => {
+    this.setState({ loggedIn: false });
+
+  };
+
+  handleSelect = page => {
+    if (window.localStorage.getItem("accessToken") !== null) {
+      this.setState({
+        loggedIn: true
+      })
+    }
+    this.setState({ activeKey: page })
+  };
 
   render() {
     return (
@@ -43,21 +55,12 @@ export default class Navigation extends React.Component {
           collapseOnSelect
           className="nav-bar"
         >
-          <Navbar.Brand as={Link} to="/" eventKey="Upload">
+          <Navbar.Brand as={Link} to="/">
             <div className="logoImage" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              {/*<Nav.Link
-                className="item"
-                eventKey="API"
-                onSelect={this.handleSelect}
-                as={Link}
-                to="/api"
-              >
-                API
-              </Nav.Link>*/}
               <Nav.Link
                 className="item"
                 eventKey="Upload"
@@ -67,14 +70,9 @@ export default class Navigation extends React.Component {
               >
                 Upload
               </Nav.Link>
-              <Nav.Link
-                className="item"
-                eventKey="Login"
-                onSelect={this.handleSelect}
-                href={this.state.loggedIn ? "/logout" : `${BASE_DOMAIN}/login`}
-              >
-                {this.state.loggedIn ? "Logout" : "Google Login"}
-              </Nav.Link>
+              {this.state.loggedIn ?
+                <Nav.Link className="item" eventKey="Login" onSelect={this.handleSelect} as={Link} to="/logout">Logout</Nav.Link> :
+                <Nav.Link className="item" eventKey="Login" onSelect={this.handleSelect} href={`${BASE_DOMAIN}/login`}>Google Login</Nav.Link>}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -85,7 +83,7 @@ export default class Navigation extends React.Component {
           <Route path="/privacy" component={Privacy} />
           <Route path="/results" component={SheetResult} />
           <Route path="/feature" component={FeaturePage} />
-          <Route path="/logout" component={LogOut} />
+          <Route path="/logout" component={(props) => <LogOut {...props} logoutHandler={this.handleLogout}/>}/>
         </div>
         <Footer />
       </Router>

@@ -14,7 +14,7 @@ export default class FeaturePage extends React.Component {
     };
   }
 
-  starOver = () => {
+  startOver = () => {
     let tempCounter = this.state.counter + 1
     this.setState({
       uploadView: true,
@@ -23,10 +23,10 @@ export default class FeaturePage extends React.Component {
     })
   }
   
-  update = (e) => {
+  update = (data) => {
     let tempCounter = this.state.counter + 1
     this.setState({
-      data: e.data,
+      data,
       counter: tempCounter,
       uploadView: false,
     })

@@ -72,17 +72,15 @@ class GSuiteClient {
       throw createErr;
     }
 
-    const data = {
-      ranges: ['Sheet1'],
+
+    const updateResource = {
       values: content,
     };
-    const updateResource = {
-      data,
-      valueInputOption: 'RAW',
-    };
-    const [updateErr, updateResponse] = await to(sheets.spreadsheets.batchUpdate({
+    const [updateErr, updateResponse] = await to(sheets.spreadsheets.values.append({
       spreadsheetId: createResponse.data.spreadsheetId,
+      range: 'Sheet1!A:A',
       resource: updateResource,
+      valueInputOption: 'RAW',
     }));
 
     if (updateErr) {

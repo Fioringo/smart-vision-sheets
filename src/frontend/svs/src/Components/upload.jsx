@@ -59,19 +59,19 @@ export default class Upload extends React.Component {
       method: "POST",
       headers: {
         Accept: "application/json"
-        // 'Content-Type': 'multipart/form-data',
       },
       body: formData
     })
       .then(response => response.json())
       .then(responseJson => {
+        responseJson = responseJson.csv[0].map((line) => line.split(','));
+        console.log(responseJson);
         // Perform success response.
         this.setState({
           disableUpload: true,
           loading: false
         });
         this.props.update(responseJson);
-        console.log(responseJson);
       })
       .catch(error => {
         this.setState({

@@ -32,18 +32,6 @@ class WebServer {
     this.configureEndpoints = this.configureEndpoints.bind(this);
   }
 
-  csvToData(data) {
-    if (!data) {
-      return data;
-    }
-
-    const output = [];
-    for (const line of data) {
-      output.push(line.split(','));
-    }
-    return output;
-  }
-
   configureEndpoints(app) {
     app.get('/login', async (req, res) => {
       const authorizeUrl = await GSuiteClient.createAuthorizationUrl(SCOPES);
@@ -53,7 +41,7 @@ class WebServer {
     app.get('/callback', async (req, res) => {
       const { code } = req.query;
       const { tokens } = await GSuiteClient.oAuth2Client.getToken(code);
-      GSuiteClient.oAuth2Client.credentials = tokens;
+      GSuiteClient.oAuth2Client.setCredentials(tokens);
       const { sub } = jwtDecode(tokens.id_token);
       res.redirect(`${BASE_DOMAIN}/#${qs.stringify({
         accessToken: tokens.access_token,
@@ -97,21 +85,31 @@ class WebServer {
 
     app.post('/add_spreadsheet', async (req, res) => {
       const { filename, content, userId } = req.body;
-      const data = this.csvToData(content);
-      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(filename, data));
+      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(filename, content));
       if (err) {
         res.status(500).send(err);
       } else {
         const docRef = this.db.collection('users').doc(userId);
-        docRef.update({
-          docs: admin.firestore.FieldValue.arrayUnion({
-            link: response.spreadsheetId,
-            name: filename,
-          }),
-        }).then(() => {
-          res.send(response);
-        }).catch((reason) => {
-          res.status(500).send(reason);
+        docRef.get().then((snapshot) => {
+          if (!snapshot.exists) {
+            docRef.set({
+              docs: [{
+                link: response.spreadsheetId,
+                name: filename,
+              }],
+            });
+          } else {
+            docRef.update({
+              docs: admin.firestore.FieldValue.arrayUnion({
+                link: response.spreadsheetId,
+                name: filename,
+              }),
+            }).then(() => {
+              res.send(response);
+            }).catch((reason) => {
+              res.status(500).send(reason);
+            });
+          }
         });
       }
     });
@@ -121,10 +119,12 @@ class WebServer {
       const docRef = this.db.collection('users').doc(userId);
       docRef.get().then((snapshot) => {
         if (!snapshot.exists) {
-          res.status(500).send({ msg: 'No such user!' });
+          res.status(500).send({ msg: 'User has no documents!' });
         } else {
-          res.send(snapshot.data());
+          res.send(snapshot.data().docs);
         }
+      }).catch((err) => {
+        res.status(500).send({ msg: `Database Error: ${err}` });
       });
     });
 

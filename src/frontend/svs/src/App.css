@@ -50,10 +50,10 @@ code {
 }
 
 .options {
-  margin: 0.4rem;
+  margin: 0.4rem auto;
   display: flex;
   flex-flow: row;
-
+  justify-content: center;
 }
 
 hr {

@@ -8,11 +8,10 @@ const BASE_DOMAIN =
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
-    const userId = localStorage.getItem("userId");
+    const accessToken = window.localStorage.getItem("accessToken");
+    const refreshToken = window.localStorage.getItem("refreshToken");
+    const userId = window.localStorage.getItem("userId");
     this.state = {
-      loggedIn: accessToken !== null,
       accessToken,
       refreshToken,
       userId
@@ -36,18 +35,17 @@ export default class Home extends React.Component {
   componentDidMount = () => {
     const params = this.getHashParams();
     console.log(params);
-    const { accessToken, refreshToken, loggedIn } = params;
+    const { accessToken, refreshToken, userId } = params;
     this.setState({
-      loggedIn: loggedIn ? true : false,
-      accessToken: accessToken,
-      refreshToken: refreshToken
+      accessToken,
+      refreshToken,
+      userId,
     });
-    if (this.state.loggedIn) {
-      localStorage.setItem("accessToken", this.state.accessToken);
-      localStorage.setItem("refreshToken", this.state.refreshToken);
-      localStorage.setItem("userId", this.state.userId);
+    if (userId) {
+      window.localStorage.setItem("accessToken", accessToken);
+      window.localStorage.setItem("refreshToken", refreshToken);
+      window.localStorage.setItem("userId", userId);
     }
-    this.resetUrl();
   };
 
   resetUrl = () => {

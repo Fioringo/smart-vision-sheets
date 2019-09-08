@@ -19,7 +19,7 @@ export default class SheetResult extends React.Component {
       previousProjects: [],
       data: [],
       fileName: "",
-      loggedIn: true, //here
+      loggedIn: false,
       sheetCreated: null,
       googleName: "",
       csvName: ""
@@ -27,9 +27,9 @@ export default class SheetResult extends React.Component {
   }
 
   componentDidMount = () => {
-    if (localStorage.getItem("accessToken") !== null) {
+    if (window.localStorage.getItem("accessToken") !== null) {
       this.setState({
-        userId: localStorage.getItem("userId"),
+        userId: window.localStorage.getItem("userId"),
         loggedIn: true
       });
     }
@@ -39,7 +39,7 @@ export default class SheetResult extends React.Component {
       });
     }
     Axios.post(`${BASE_DOMAIN}/get_spreadsheets`, {
-      userId: localStorage.getItem("userId")
+      userId: window.localStorage.getItem("userId")
     })
       .then(res => {
         this.setState({
@@ -60,11 +60,11 @@ export default class SheetResult extends React.Component {
 
   createSheet = () => {
     let config = {
-      filename: this.state.fileName,
+      filename: this.state.googleName,
       content: this.state.data,
-      userId: localStorage.getItem("userId")
+      userId: window.localStorage.getItem("userId")
     };
-    Axios.post(`${BASE_DOMAIN}/add_spreadsheet`, this.props.data)
+    Axios.post(`${BASE_DOMAIN}/add_spreadsheet`, config)
       .then(res => {
         this.setState({
           sheetCreated: true
@@ -154,7 +154,7 @@ export default class SheetResult extends React.Component {
               width: "12rem",
               marginRight: "0.4em",
               padding: "0.3em",
-              margin: "auto"
+              
             }}
             className="text-center"
           >
@@ -191,7 +191,7 @@ export default class SheetResult extends React.Component {
         </Button>
         <ListGroup defaultActiveKey="/results">{previousSheets}</ListGroup>
         {this.state.sheetCreated === false ? (
-          <Alert variant="danger" dismissible={true} onClose={this.resetAlert}>
+          <Alert variant="danger" dismissible>
             Error: Sheet wasn't created!
           </Alert>
         ) : null}
