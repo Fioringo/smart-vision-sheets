@@ -1,7 +1,7 @@
 .footer {
   text-align: center;
-  background-color: #000000;
-  color: #c2c2c2;
+  background-color: #1e1e1e;
+  color: #FFF;
   display: flex;
   flex-flow: column;
   align-content: center;
@@ -9,7 +9,7 @@
   justify-items: center;
   padding: 0.5em;
   margin-bottom: 0;
-  font-size: 0.8em;
+  font-size: 0.7em;
   position: absolute;
   bottom: 0px;
   left: 0px;
@@ -18,21 +18,32 @@
 
 .link {
   text-decoration: none;
-  color: #c2c2c2;
+  color: #FFF;
 }
 
 .link:hover {
   cursor: pointer;
-  text-decoration: underline;
-  color: #FFF;
-}
-
-.link:visited {
   text-decoration: none;
-  color: #c2c2c2;
+  color: #aaa;
 }
 
 .text {
-  color: #c2c2c2;
+  color: #FFF;
 }
 
+.source {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.aboutLink {
+  float: left;
+}
+
+.homeLink {
+  float: right;
+}
+
+.privacyLink {
+  margin: 0 auto;
+}

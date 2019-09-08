@@ -1,17 +1,24 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const formData = require('express-form-data');
 const to = require('await-to-js').to;
 require('dotenv').config();
 const GSuiteClient = new (require('./gSuiteClient'))();
-const ImageProcessor = require('../processing/imageProcessor');
-// const TextProcessor = require('../processing/textProcessor');
-const serviceAccount = require('../PennAppsXXServiceAccount.json');
+const ImageProcessor = require('./imageProcessor');
+// const TextProcessor = require('./processing/textProcessor');
+const serviceAccount = require('./PennAppsXXServiceAccount.json');
 const admin = require('firebase-admin');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+const qs = require('querystring');
+const BASE_DOMAIN = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : '';
+const SCOPES = [
+  'https://www.googleapis.com/auth/spreadsheets',
+  'https://www.googleapis.com/auth/documents',
+  'https://www.googleapis.com/auth/drive',
+  'https://www.googleapis.com/auth/userinfo.email',
+];
 
 class WebServer {
   constructor(port = 5000) {
@@ -23,34 +30,42 @@ class WebServer {
     this.configureEndpoints = this.configureEndpoints.bind(this);
   }
 
-  configureEndpoints(app) {
-    app.get('/login', (req, res) => {
+  csvToData(data) {
+    if (!data) {
+      return data;
+    }
 
+    const output = [];
+    for (const line of data) {
+      output.push(line.split(','));
+    }
+    return output;
+  }
+
+  configureEndpoints(app) {
+    app.get('/login', async (req, res) => {
+      const authorizeUrl = await GSuiteClient.createAuthorizationUrl(SCOPES);
+      res.redirect(authorizeUrl);
     });
 
     app.get('/callback', async (req, res) => {
-
+      const { code } = req.query;
+      const { tokens } = GSuiteClient.oAuth2Client.getToken(code);
+      GSuiteClient.oAuth2Client.credentials = tokens;
+      res.redirect(`${BASE_DOMAIN}/#${qs.stringify({ tokens })}`);
     });
 
-    app.get('/logout', (req, res) => {
-
-    });
-
-    app.post('/process_images', upload.array('photos'), async (req, res) => {
-      const x = 1;
-      const [err, response] = await to(Promise.all(req.files.photos.map((image) => {
-        return ImageProcessor.getTextFromImage(image.data);
-      })));
-
-      if (err) {
-        res.status(500).send(err);
+    app.post('/process_image', upload.single('file0'), async (req, res) => {
+      const hasTitle = Boolean(req.body.hasTitle);
+      const base64Img = Buffer.from(req.file.buffer, 'base64');
+      const [csvErr, csvResponse] = await to(ImageProcessor.getCSVFromImage(base64Img, hasTitle));
+      if (csvErr) {
+        res.status(500).send(csvErr);
       } else {
-        res.send(response);
+        res.send({
+          csv: csvResponse,
+        });
       }
-    });
-
-    app.post('/translate_text', async (req, res) => {
-
     });
 
     app.post('/add_doc', async (req, res) => {
@@ -75,7 +90,8 @@ class WebServer {
 
     app.post('/add_spreadsheet', async (req, res) => {
       const { filename, content, userId } = req.body;
-      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(filename, content));
+      const data = this.csvToData(content);
+      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(filename, data));
       if (err) {
         res.status(500).send(err);
       } else {
@@ -91,6 +107,18 @@ class WebServer {
           res.status(500).send(reason);
         });
       }
+    });
+
+    app.post('/get_spreadsheets', async (req, res) => {
+      const { userId } = req.body;
+      const docRef = this.db.collection('users').doc(userId);
+      docRef.get().then((snapshot) => {
+        if (!snapshot.exists) {
+          res.status(500).send({ msg: 'No such user!' });
+        } else {
+          res.send(snapshot.data());
+        }
+      });
     });
 
     app.post('/remove_doc', async (req, res) => {
@@ -128,7 +156,7 @@ class WebServer {
 
   configureApp() {
     let app = express();
-    app.use(express.static('public'));
+    app.use(express.static(__dirname + '/public'));
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -137,7 +165,6 @@ class WebServer {
   }
 
   start() {
-    // Initialize Firebase Cloud Firestore
     admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
     this.db = admin.firestore();
     this.app.listen(this.port, () => console.log(`Server initiated, listening on port ${this.port}`));

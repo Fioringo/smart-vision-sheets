@@ -1,7 +1,8 @@
 .App {
-  background-color: #272727;
-  color: #c2c2c2;
+  background-color: #121212;
+  color: #FFF;
   font-family: 'Roboto', sans-serif;
+  font-size: 1.2em;
   /* height: 100vh; */
 }
 
@@ -11,4 +12,46 @@
   display: flex;
   align-content: center;
   justify-items: center;
+  padding: 30px;
+}
+
+code {
+  color: #FFF;
+  background-color: #411313;
+}
+
+.Loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+}
+
+.FeaturePage {
+  width: 100%;
+  height: 100%;
+}
+
+.options {
+  margin: 0.4rem;
+  display: flex;
+  flex-flow: row;
+
+}
+
+hr {
+  border-top: 1px solid #fff;
+}
+
+.loadingAnimation {
+  background-image: url("./images/SVSmlLoading.gif");
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 100px;
 }
