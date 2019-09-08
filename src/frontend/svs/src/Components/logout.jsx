@@ -8,6 +8,7 @@ export default class LogOut extends React.Component {
   componentDidMount = () => {
     localStorage.removeItem("accessToken")
     localStorage.removeItem("refreshToken")
+    localStorage.removeItem("userId")
   }
 
   render() {

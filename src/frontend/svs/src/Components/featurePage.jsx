@@ -28,6 +28,7 @@ export default class FeaturePage extends React.Component {
     this.setState({
       data: e.data,
       counter: tempCounter,
+      uploadView: false,
     })
   }
 
