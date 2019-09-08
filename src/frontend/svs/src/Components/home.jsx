@@ -2,6 +2,7 @@ import React from "react";
 import "./home.css";
 const Link = require('react-router-dom').Link;
 let qs = require("query-string")
+const BASE_DOMAIN = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000"
 
 export default class Home extends React.Component {
 
@@ -64,7 +65,7 @@ export default class Home extends React.Component {
         <div className="homeText">
           <div className="step">
             <div className="stepTitle">{"Step" } <div className="yellow">1</div>:</div>
-            <div className="stepText">Login with your Google Account</div>
+            <div className="stepText"><a href={`${BASE_DOMAIN}/login`} className="link">Login</a> with your Google Account</div>
           </div>
           <div className="step">
             <div className="stepTitle">{"Step" } <div className="blue">2</div>:</div>
