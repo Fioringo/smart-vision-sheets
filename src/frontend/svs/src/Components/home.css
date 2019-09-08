@@ -1,13 +1,16 @@
 .yellow {
   color: #ffff36;
+  margin-left: 0.2em;
 }
 
 .blue {
   color: #3399ff;
+  margin-left: 0.2em;
 }
 
 .red {
   color: #ff0000;
+  margin-left: 0.2em;
 }
 
 .grey {
@@ -16,6 +19,7 @@
 
 .green {
   color: #24cb31;
+  margin-left: 0.2em;
 }
 
 .title {
