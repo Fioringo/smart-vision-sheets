@@ -7,6 +7,7 @@ import GoogleSheets from "../images/Google sheets.svg";
 import Axios from "axios";
 import { CSVLink } from "react-csv";
 const ListGroup = require("react-bootstrap").ListGroup;
+const Alert = require("react-bootstrap").Alert;
 const BASE_DOMAIN =
   process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
 
@@ -17,7 +18,8 @@ export default class SheetResult extends React.Component {
       previousProjects: [],
       data: [],
       fileName: "",
-      loggedIn: false
+      loggedIn: false,
+      sheetCreated: null
     };
   }
 
@@ -33,7 +35,9 @@ export default class SheetResult extends React.Component {
         data: this.props.data
       });
     }
-    Axios.post(`${BASE_DOMAIN}/get_spreadsheets`, {})
+    Axios.post(`${BASE_DOMAIN}/get_spreadsheets`, {
+      userId: localStorage.getItem("userId")
+    })
       .then(res => {
         this.setState({
           previousProjects: res
@@ -54,9 +58,12 @@ export default class SheetResult extends React.Component {
   createSheet = () => {
     let config = {
       filename: this.state.fileName,
-      content: this.state.data
+      content: this.state.data,
+      userId: localStorage.getItem("userId")
     };
-    Axios.post(`${BASE_DOMAIN}/add_spreadsheet`, this.props.data);
+    Axios.post(`${BASE_DOMAIN}/add_spreadsheet`, this.props.data)
+      .then(res => {})
+      .catch(err => {});
   };
 
   render() {
@@ -71,6 +78,7 @@ export default class SheetResult extends React.Component {
         );
       });
     }
+    
     let AddToGoogleSheet = (
       <Card
         bg="primary"
@@ -85,6 +93,20 @@ export default class SheetResult extends React.Component {
           </Button>
         </Card.Body>
       </Card>
+    );
+
+    let GoogleSuccessAlert = (
+      <Alert variant="success">
+        <Alert.Heading
+          style={{ width: "12rem", height: "20rem", margin: "0.4em", padding: "0.2em" }}
+        >
+          Success!
+        </Alert.Heading>
+        <p>
+          A Google Spreadsheet has been created with the name{" "}
+          {this.state.fileName}.
+        </p>
+      </Alert>
     );
     return (
       <div className="about">
@@ -115,12 +137,21 @@ export default class SheetResult extends React.Component {
               ) : null}
             </Card.Body>
           </Card>
-          {this.state.loggedIn ? AddToGoogleSheet : null}
+          {this.state.loggedIn
+            ? this.state.sheetCreated
+              ? GoogleSuccessAlert
+              : AddToGoogleSheet
+            : null}
         </div>
         <Button onClick={this.startAgain} variant="danger">
           <span className="glyphicon glyphicon-repeat"></span>Start Over
         </Button>
         <ListGroup defaultActiveKey="/results">{previousSheets}</ListGroup>
+        {this.state.sheetCreated === true ? (
+          <Alert variant="danger" dismissible={true} onClose={this.resetAlert}>
+            Error: Sheet wasn't created!
+          </Alert>
+        ) : null}
       </div>
     );
   }
