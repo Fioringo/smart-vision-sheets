@@ -8,10 +8,10 @@ import Api from "./api";
 import Footer from "./footer";
 import Upload from "./upload";
 import About from "./about";
-import axios from "axios";
 import Privacy from "./privacy";
 import SheetResult from "./result";
 import FeaturePage from "./featurePage";
+import LogOut from "./logout";
 
 export default class Navigation extends React.Component {
   constructor(props) {
@@ -19,23 +19,16 @@ export default class Navigation extends React.Component {
 
     this.state = {
       activeKey: "Home",
-      auth: null
+      loggedIn: false,
     };
   }
 
   componentDidMount() {
-    // console.log("header mounted");
-    axios
-      .get("/auth/current_user")
-      .then(response => {
-        console.log("response from auth/google", response);
-        this.setState({ auth: response.data.userData });
-        console.log("auth: ", this.state.auth);
-        console.log(typeof this.state.auth);
+    if(localStorage.getItem("accessToken") !== null){
+      this.setState({
+        loggedIn: true
       })
-      .catch(function(err) {
-        console.log(err);
-      });
+    }
   }
 
   handleSelect = page => this.setState({ activeKey: page });
@@ -79,9 +72,9 @@ export default class Navigation extends React.Component {
                 className="item"
                 eventKey="Upload"
                 onSelect={this.handleSelect}
-                href={this.state.auth ? "/auth/logout" : "/auth/google"}
+                href={this.state.loggedIn ? "/logout" : "http://localhost:5000/login"}
               >
-                {this.state.auth ? "Logout" : "Google Login"}
+                {this.state.loggedIn ? "Logout" : "Google Login"}
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -94,6 +87,7 @@ export default class Navigation extends React.Component {
           <Route path="/privacy" component={Privacy} />
           <Route path="/results" component={SheetResult} />
           <Route path="/feature" component={FeaturePage} />
+          <Route path="/logout" component={LogOut} />
         </div>
         <Footer />
       </Router>
