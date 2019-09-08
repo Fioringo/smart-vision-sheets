@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import CSVLogo from "../images/csv-file-format-extension.svg";
 import GoogleSheets from "../images/Google sheets.svg";
+import Axios from "axios";
 
 export default class SheetResult extends React.Component {
   constructor(props) {
@@ -14,6 +15,14 @@ export default class SheetResult extends React.Component {
   startAgain = () => {
     this.props.startAgain();
   };
+
+  downloadCSV = () => {
+    
+  }
+
+  createSheet = () => {
+    Axios.post('',this.props.data)
+  }
 
   render() {
     return (
@@ -29,9 +38,6 @@ export default class SheetResult extends React.Component {
             <Card.Img variant="top" src={CSVLogo} />
             <Card.Body>
               <Card.Title>CSV File</Card.Title>
-              {/* <Card.Text>
-              Download this CSV file with your sheet in <code>.csv</code> format.
-            </Card.Text> */}
               <Button variant="warning">Download</Button>
             </Card.Body>
           </Card>
@@ -39,15 +45,12 @@ export default class SheetResult extends React.Component {
             <Card.Img variant="top" src={GoogleSheets} />
             <Card.Body>
               <Card.Title>Google Sheets</Card.Title>
-              {/* <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </Card.Text> */}
-              <Button variant="warning">Add to Sheets</Button>
+              <Button variant="warning" onClick={this.createSheet}>Add to Sheets</Button>
+              
             </Card.Body>
           </Card>
         </div>
-        <Button onClick={this.startAgain} variant="danger" className="glyphicon glyphicon-repeat">Start Over</Button>
+        <Button onClick={this.startAgain} variant="danger"><span className="glyphicon glyphicon-repeat"></span>Start Over</Button>
       </div>
     );
   }
