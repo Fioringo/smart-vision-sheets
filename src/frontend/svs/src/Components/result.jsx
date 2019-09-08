@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import CSVLogo from "../images/csv-file-format-extension.svg";
 import GoogleSheets from "../images/Google sheets.svg";
 import Axios from "axios";
-import CsvDownloader from "react-csv-downloader";
+import { CSVLink, CSVDownload } from "react-csv"
 
 export default class SheetResult extends React.Component {
   constructor(props) {
@@ -39,9 +39,9 @@ export default class SheetResult extends React.Component {
             <Card.Img variant="top" src={CSVLogo} />
             <Card.Body>
               <Card.Title>CSV File</Card.Title>
-              <CsvDownloader>
+              {/* {this.props.data !== null ? <CSVLink data={this.props.data}>Download</CSVLink> : null} */}
                 <Button variant="warning">Download</Button>
-              </CsvDownloader>
+
             </Card.Body>
           </Card>
           <Card

@@ -34,11 +34,14 @@ code {
 }
 
 .loadingAnimation {
-  margin: auto;
-  /* background-image: url('./svsloading.gif'); */
+  background-image: url("./images/SVSmlLoading.gif");
   background-repeat: no-repeat;
-  height: 50px;
-  width: 70px;
+  height: 200px;
+  width: 200px;
+  background-size: contain;
+  margin: auto;
+  border: none;
+  border-radius: 0.9em;
 }
 
 .FeaturePage {

@@ -42,7 +42,7 @@ export default class Navigation extends React.Component {
           collapseOnSelect
           className="nav-bar"
         >
-          <Navbar.Brand as={Link} to="/">
+          <Navbar.Brand as={Link} to="/" eventKey="Upload">
             <div className="logoImage" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -68,7 +68,7 @@ export default class Navigation extends React.Component {
               </Nav.Link>
               <Nav.Link
                 className="item"
-                eventKey="Upload"
+                eventKey="Login"
                 onSelect={this.handleSelect}
                 href={this.state.loggedIn ? "/logout" : "http://localhost:5000/login"}
               >
