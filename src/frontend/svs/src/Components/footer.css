@@ -1,7 +1,7 @@
 .footer {
   text-align: center;
   background-color: #000000;
-  color: #c2c2c2;
+  color: #FFF;
   display: flex;
   flex-flow: column;
   align-content: center;
@@ -18,21 +18,15 @@
 
 .link {
   text-decoration: none;
-  color: #c2c2c2;
+  color: #FFF;
 }
 
 .link:hover {
   cursor: pointer;
-  text-decoration: underline;
-  color: #FFF;
-}
-
-.link:visited {
-  text-decoration: none;
-  color: #c2c2c2;
+  color: #FF1717;
 }
 
 .text {
-  color: #c2c2c2;
+  color: #FFF;
 }
 

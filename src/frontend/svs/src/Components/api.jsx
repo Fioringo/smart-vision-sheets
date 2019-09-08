@@ -10,19 +10,13 @@ export default class Api extends React.Component {
         <div className="contentText">
           <div className="block">
             <div className="apiText">
-              In order to use our api you'll have to convert your image to{" "}
+              To use our api, you'll need to convert your image to{" "}
               <code>base64</code> and call{" "}
               <code>https://svisions.tech/api/image</code>
             </div>
             <div className="apiExample">
-              <div className="language">JavaScript</div>
-              <code>
-                {/* ...<br/> */}
-                <div>...</div>
-                <div>axios.post('https://svisions.tech/api/image',image)</div>
-                <div>...</div>
-                {/* ...<br/> */}
-              </code>
+              <div className="language">JavaScript:</div>
+              <code>axios.post('https://svisions.tech/api/image',image)</code>
             </div>
           </div>
           <br />
