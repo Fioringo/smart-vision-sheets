@@ -4,9 +4,9 @@ const { google } = require('googleapis');
 class GSuiteClient {
   constructor() {
     this.oAuth2Client = new google.auth.OAuth2(
-      YOUR_CLIENT_ID,
-      YOUR_CLIENT_SECRET,
-      YOUR_REDIRECT_URL
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      'http://localhost:5000/callback'
     );
   }
 
