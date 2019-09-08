@@ -1,7 +1,6 @@
-import React from 'react';
-// import { BrowserRouter as Link} from "react-router-dom"
-import Link from 'react-router-dom/Link'
 import './footer.css';
+import React from 'react';
+const Link = require('react-router-dom').Link;
 
 export default class Footer extends React.Component{
 
