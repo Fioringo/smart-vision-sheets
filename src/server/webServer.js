@@ -30,6 +30,18 @@ class WebServer {
     this.configureEndpoints = this.configureEndpoints.bind(this);
   }
 
+  csvToData(data) {
+    if (!data) {
+      return data;
+    }
+
+    const output = [];
+    for (const line of data) {
+      output.push(line.split(','));
+    }
+    return output;
+  }
+
   configureEndpoints(app) {
     app.get('/login', (req, res) => {
       const authorizeUrl = GSuiteClient.createAuthorizationUrl(SCOPES);
@@ -56,10 +68,6 @@ class WebServer {
       }
     });
 
-    app.post('/translate_text', async (req, res) => {
-
-    });
-
     app.post('/add_doc', async (req, res) => {
       const { filename, content, userId } = req.body;
       const [err, response] = await to(GSuiteClient.createGoogleDocument(filename, content));
@@ -82,7 +90,8 @@ class WebServer {
 
     app.post('/add_spreadsheet', async (req, res) => {
       const { filename, content, userId } = req.body;
-      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(filename, content));
+      const data = this.csvToData(content);
+      const [err, response] = await to(GSuiteClient.createGoogleSpreadsheet(filename, data));
       if (err) {
         res.status(500).send(err);
       } else {
