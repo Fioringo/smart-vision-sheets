@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/enioluwa23/smart-vision-sheets#readme",
   "dependencies": {
+    "@google-cloud/translate": "^4.0.0",
+    "@google-cloud/vision": "^1.0.0",
     "await-to-js": "^2.1.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -26,9 +28,13 @@
     "express-form-data": "^2.0.10",
     "firebase-admin": "^8.5.0",
     "googleapis": "^43.0.0",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
+    "querystring": "^0.2.0"
   },
   "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "^3.3.0",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.18.2"

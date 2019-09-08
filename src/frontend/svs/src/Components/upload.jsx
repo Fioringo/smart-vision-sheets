@@ -26,9 +26,9 @@ export default class Upload extends React.Component {
   };
 
   endableTitle = e => {
-    this.setState({
-      hasTitle: true
-    });
+    this.setState((prevState) => ({
+      hasTitle: !prevState.hasTitle
+    }));
   };
 
   onFileLoadEnd = e => {
@@ -45,73 +45,32 @@ export default class Upload extends React.Component {
     // });
 
     if (this.state.selectedFile) {
-      var photo = {
-        uri: this.state.selectedFile.uri,
-        type: this.state.selectedFile.type,
-        name: this.state.selectedFile.fileName,
-      };
       formData.append('file0', this.state.selectedFile);
+      formData.append('hasTitle', this.state.hasTitle);
     }
 
     console.log(formData)
 
-    fetch( 'http://localhost:5000/process_image', {
+    fetch('http://localhost:5000/process_image', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        // 'Content-Type': 'multipart/form-data',
       },
       body: formData
-     })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      // Perform success response.
-      console.log(responseJson);
     })
-    .catch((error) => {
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // Perform success response.
+        console.log(responseJson);
+      })
+      .catch((error) => {
         console.log(error)
-        console.log(["Ops, something Went Wrong."]);
-    });
-
-/*
-    console.log('formData = ' + JSON.stringify(formData));
-
-    this.setState({
-      selectedFile: []
-    });
-
-    axios.post('http://localhost:5000/process_image', {data: formData}, {config: {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      }
-    }})
-    .then((resp)=>{
-      console.log(`Response from file upload = ${JSON.stringify(resp)}`)
-    }).catch((err)=>{
-      console.log(err);
-    });
-*/
-    // axios({
-    //   method: "post",
-    //   processData: false,
-    //   contentType: "multipart/form-data",
-    //   cache: false,
-    //   url: "http://localhost:5000/process_image",
-    //   // url: "http://localhost:3000/process_image",
-    //   data: formData,
-    //   //add
-    //   config: { headers: formData.get(Headers) }
-    // }).then((resp)=>{
-    //   console.log(`Response from file upload = ${JSON.stringify(resp)}`)
-    // }).catch((err)=>{
-    //   console.log(err);
-    // });
+        console.log("Ops, something Went Wrong.");
+      });
   };
 
   onDrop = e => {
     console.log(e);
-    // let tempPictures = this.state.pictures
-    // tempPictures.concat(e)
     this.setState({
       selectedFile: e[0]
     });
@@ -135,25 +94,13 @@ export default class Upload extends React.Component {
               />
               {"  Has Title"}
             </div>
-            {/* <form method="post" action="#" id="#">
-              <div className="form-group files color">
-                <label>Upload Your File </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="file"
-                  multiple
-                  onChange={this.onDrop}
-                />
-              </div>
-            </form> */}
             <ImageUploader
               withIcon={true}
               onChange={this.onDrop}
               imgExtension={[".jpg", ".png"]}
               accept={'accept=jpg,png'}
               label={'Max file size: 5mb, accepted: jpg | png'}
-              // maxFileSize={5242880}
+            // maxFileSize={5242880}
             />
             <button
               type="button"

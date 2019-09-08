@@ -1,7 +1,0 @@
-{
-  "RESULT_TOPIC": "pennappsxx_results_topic",
-  "RESULT_BUCKET": "pennappsxx_translations",
-  "TRANSLATE_TOPIC": "pennappsxx_translations_topic",
-  "TRANSLATE": true,
-  "TO_LANG": ["en", "fr", "es", "ja", "ru"]
-  }
