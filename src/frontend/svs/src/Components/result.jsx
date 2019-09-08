@@ -85,17 +85,17 @@ export default class SheetResult extends React.Component {
   };
 
   render() {
-    let previousSheets;
-    if (this.state.previousProjects !== []) {
-      var prevProjTemp = this.state.previousProjects;
-      previousSheets = prevProjTemp.map(e => {
-        return (
-          <ListGroup.Item key={e.name} action href={e.link}>
-            {e.name}
-          </ListGroup.Item>
-        );
-      });
-    }
+    // let previousSheets;
+    // if (this.state.previousProjects !== []) {
+    //   var prevProjTemp = this.state.previousProjects;
+    //   previousSheets = prevProjTemp.map(e => {
+    //     return (
+    //       <ListGroup.Item key={e.name} action href={e.link}>
+    //         {e.name}
+    //       </ListGroup.Item>
+    //     );
+    //   });
+    // }
 
     let AddToGoogleSheet = (
       <Card
@@ -189,7 +189,7 @@ export default class SheetResult extends React.Component {
         <Button onClick={this.startAgain} variant="danger">
           <span className="glyphicon glyphicon-repeat"></span>Start Over
         </Button>
-        <ListGroup defaultActiveKey="/results">{previousSheets}</ListGroup>
+        {/* <ListGroup defaultActiveKey="/results">{previousSheets}</ListGroup> */}
         {this.state.sheetCreated === false ? (
           <Alert variant="danger" dismissible>
             Error: Sheet wasn't created!

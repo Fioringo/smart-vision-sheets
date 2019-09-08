@@ -6,7 +6,7 @@ class GSuiteClient {
     this.oAuth2Client = new google.auth.OAuth2(
       process.env.CLIENT_ID,
       process.env.CLIENT_SECRET,
-      'http://localhost:5000/callback'
+      'https://cedar-unison-252202.appspot.com/callback'
     );
   }
 
